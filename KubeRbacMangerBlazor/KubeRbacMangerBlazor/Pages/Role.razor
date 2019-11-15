@@ -1,0 +1,63 @@
+﻿@page "/role"
+
+@using Microsoft.AspNetCore.SignalR.Client
+
+<input placeholder="Namespace" @bind="_namespace" />
+<button class="btn btn-primary" @onclick="GetRoles" disabled="@IsDisabled">Get Roles</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Role Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in roles)
+        {
+            <tr>
+                <td>
+                    @role
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IList<string> roles = new List<string>();
+    private HubConnection connection;
+    private string _namespace = "default";
+    protected bool IsDisabled { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        connection = new HubConnectionBuilder()
+           .WithUrl("https://localhost:5001/kuberneteshub")
+           .Build();
+
+        connection.On<string>("NotifyRoleAddEvent", NotifyRoleAddEvent);
+        connection.On<string>("NotifyRoleDeleteEvent", NotifyRoleDeleteEvent);
+        await connection.StartAsync();
+    }
+
+    Task NotifyRoleAddEvent(string role)
+    {
+        roles.Add(role);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+
+    Task NotifyRoleDeleteEvent(string role)
+    {
+        roles.Remove(role);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    async Task GetRoles()
+    {
+        await connection.SendAsync("GetRoles", _namespace);
+        IsDisabled = true;
+    }
+}
