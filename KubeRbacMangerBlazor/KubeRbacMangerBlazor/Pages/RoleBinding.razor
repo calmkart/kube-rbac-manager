@@ -1,4 +1,4 @@
-﻿@page "/role"
+﻿@page "/role-binding"
 
 @using Microsoft.AspNetCore.SignalR.Client
 
@@ -11,11 +11,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var role in roles)
+        @foreach (var roleBinding in roleBindings)
         {
             <tr>
                 <td>
-                    @role
+                    @roleBinding
                 </td>
             </tr>
         }
@@ -23,7 +23,7 @@
 </table>
 
 @code {
-    private IList<string> roles = new List<string>();
+    private IList<string> roleBindings = new List<string>();
     private HubConnection connection;
     private string _namespace = "default";
 
@@ -34,24 +34,24 @@
            .WithAutomaticReconnect()
            .Build();
 
-        connection.On<string>("NotifyNamespacedRoleAddEvent", NotifyNamespacedRoleAddEvent);
-        connection.On<string>("NotifyNamespacedRoleDeleteEvent", NotifyNamespacedRoleDeleteEvent);
+        connection.On<string>("NotifyNamespacedRoleBindingAddEvent", NotifyNamespacedRoleBindingAddEvent);
+        connection.On<string>("NotifyNamespacedRoleBindingDeleteEvent", NotifyNamespacedRoleBindingDeleteEvent);
         await connection.StartAsync();
 
-        await connection.SendAsync("GetNamespacedRole", _namespace);
+        await connection.SendAsync("GetNamespacedRoleBinding", _namespace);
     }
 
-    Task NotifyNamespacedRoleAddEvent(string role)
+    Task NotifyNamespacedRoleBindingAddEvent(string roleBinding)
     {
-        roles.Add(role);
+        roleBindings.Add(roleBinding);
         StateHasChanged();
         return Task.CompletedTask;
     }
 
 
-    Task NotifyNamespacedRoleDeleteEvent(string role)
+    Task NotifyNamespacedRoleBindingDeleteEvent(string roleBinding)
     {
-        roles.Remove(role);
+        roleBindings.Remove(roleBinding);
         StateHasChanged();
         return Task.CompletedTask;
     }

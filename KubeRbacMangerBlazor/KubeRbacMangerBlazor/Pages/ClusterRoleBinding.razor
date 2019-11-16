@@ -1,0 +1,55 @@
+﻿@page "/cluster-role-binding"
+
+@using Microsoft.AspNetCore.SignalR.Client
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Cluster Role Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var clusterRoleBinding in clusterRoleBindings)
+        {
+            <tr>
+                <td>
+                    @clusterRoleBinding
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IList<string> clusterRoleBindings = new List<string>();
+    private HubConnection connection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        connection = new HubConnectionBuilder()
+           .WithUrl("https://localhost:5001/kuberneteshub")
+           .WithAutomaticReconnect()
+           .Build();
+
+        connection.On<string>("NotifyClusterRoleBindingAddEvent", NotifyClusterRoleBindingAddEvent);
+        connection.On<string>("NotifyClusterRoleBindingDeleteEvent", NotifyClusterRoleBindingDeleteEvent);
+        await connection.StartAsync();
+
+        await connection.SendAsync("GetClusterRoleBinding");
+    }
+
+    Task NotifyClusterRoleBindingAddEvent(string roleBinding)
+    {
+        clusterRoleBindings.Add(roleBinding);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+
+    Task NotifyClusterRoleBindingDeleteEvent(string roleBinding)
+    {
+        clusterRoleBindings.Remove(roleBinding);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+}

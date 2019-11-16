@@ -3,7 +3,7 @@
     "KubeRbacMangerBlazor": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/role",
+      "launchUrl": "role",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

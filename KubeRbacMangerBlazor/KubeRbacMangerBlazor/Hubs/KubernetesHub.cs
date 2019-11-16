@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Threading.Tasks;
 
 namespace KubeRbacMangerBlazor.Hubs
@@ -6,6 +7,10 @@ namespace KubeRbacMangerBlazor.Hubs
     public class KubernetesHub : Hub
     {
         public static string ClientsString = "Clients";
+        public static string WatchRolesString = "WatchRoles";
+        public static string WatchServiceAccountsString = "WatchServiceAccounts";
+        public static string WatchRoleBindingsString = "WatchRoleBindings";
+        public static string WatchClusterRoleBindingsString = "WatchClusterRoleBindingsString";
         private readonly KubernetesService kubernetesService;
 
         public KubernetesHub(KubernetesService kubernetesService)
@@ -17,9 +22,38 @@ namespace KubeRbacMangerBlazor.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, ClientsString);
         }
 
-        public async Task GetRoles(string @namespace)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await kubernetesService.GetRoles(@namespace);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, ClientsString);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, WatchRolesString);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, WatchServiceAccountsString);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, WatchRoleBindingsString);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, WatchClusterRoleBindingsString);
+        }
+
+        public async Task GetNamespacedRole(string @namespace)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, WatchRolesString);
+
+            await kubernetesService.GetNamespacedRole(@namespace);
+        }
+
+        public async Task GetNamespacedServiceAccount(string @namespace)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, WatchServiceAccountsString);
+            await kubernetesService.GetNamespacedServiceAccount(@namespace);
+        }
+
+        public async Task GetNamespacedRoleBinding(string @namespace)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, WatchRoleBindingsString);
+            await kubernetesService.GetNamespacedRoleBinding(@namespace);
+        }
+
+        public async Task GetClusterRoleBinding()
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, WatchClusterRoleBindingsString);
+            await kubernetesService.GetClusterRoleBinding();
         }
     }
 }
