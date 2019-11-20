@@ -1,9 +1,9 @@
 package main
 
 import (
+	"kube-rbac-manager/pkg/kuberbac"
 	"kube-rbac-manager/pkg/logger"
 	"kube-rbac-manager/pkg/router"
-	"kube-rbac-manager/pkg/kuberbac"
 
 	"github.com/gin-contrib/cors"
 )
@@ -14,12 +14,13 @@ func main() {
 	logger.InitLogger()
 
 	// create a KubeOpts
-	kOpts, err := kuberbac.NewKubeOpts()
+	err := kuberbac.NewKubeOpts()
 	if err != nil {
 		logger.Log.Errorf("Create kubeOpts error, err: %s", err.Error())
+		return
 	}
 	// start rbac list-watch listen
-	go kOpts.startListen()
+	go kuberbac.RbacOperator.StartListen()
 
 	// create gin router
 	router := router.GetRouter()

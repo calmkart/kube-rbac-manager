@@ -20,6 +20,7 @@ func GetRouter() *gin.Engine {
 		account.POST("/createAccount", accountCtl.CreateAccount)
 		account.GET("/ListAccount", accountCtl.ListAccount)
 		account.POST("/deleteAccount", accountCtl.DeleteAccount)
+		account.POST("/updateAccount", accountCtl.UpdateAccount)
 	}
 
 	// Role router
@@ -28,6 +29,7 @@ func GetRouter() *gin.Engine {
 		role.POST("/createRole", roleCtl.CreateRole)
 		role.GET("/ListRole", roleCtl.ListRole)
 		role.POST("/deleteRole", roleCtl.DeleteRole)
+		role.POST("/updateRole", roleCtl.UpdateRole)
 	}
 
 	// RoleBinding router
@@ -36,6 +38,7 @@ func GetRouter() *gin.Engine {
 		roleBinding.POST("/createRoleBinding", roleBindingCtl.CreateRoleBinding)
 		roleBinding.GET("/ListRoleBinding", roleBindingCtl.ListRoleBinding)
 		roleBinding.POST("/deleteRoleBinding", roleBindingCtl.DeleteRoleBinding)
+		roleBinding.POST("/updateRoleBinding", roleBindingCtl.UpdateRoleBinding)
 	}
 
 	return router
