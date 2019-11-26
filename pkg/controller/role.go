@@ -8,8 +8,8 @@ import (
 
 type RoleController struct{}
 
-func (rCtl *RoleController) CreateRole(c *gin.Context) {
-	err := kuberbac.RbacOperator.CreateRole()
+func (rCtl *RoleController) Create(c *gin.Context) {
+	err := kuberbac.RbacOperator.Role.Create()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -17,8 +17,8 @@ func (rCtl *RoleController) CreateRole(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (rCtl *RoleController) ListRole(c *gin.Context) {
-	err := kuberbac.RbacOperator.ListRole()
+func (rCtl *RoleController) List(c *gin.Context) {
+	err := kuberbac.RbacOperator.Role.List()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -26,8 +26,8 @@ func (rCtl *RoleController) ListRole(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (rCtl *RoleController) DeleteRole(c *gin.Context) {
-	err := kuberbac.RbacOperator.DeleteRole()
+func (rCtl *RoleController) Delete(c *gin.Context) {
+	err := kuberbac.RbacOperator.Role.Delete()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -35,8 +35,8 @@ func (rCtl *RoleController) DeleteRole(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (rCtl *RoleController) UpdateRole(c *gin.Context) {
-	err := kuberbac.RbacOperator.UpdateRole()
+func (rCtl *RoleController) Update(c *gin.Context) {
+	err := kuberbac.RbacOperator.Role.Update()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})

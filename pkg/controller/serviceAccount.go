@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type AccountController struct{}
+type ServiceAccountController struct{}
 
-func (aCtl *AccountController) CreateAccount(c *gin.Context) {
-	err := kuberbac.RbacOperator.CreateAccount()
+func (aCtl *ServiceAccountController) Create(c *gin.Context) {
+	err := kuberbac.RbacOperator.ServiceAccount.Create()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -18,8 +18,8 @@ func (aCtl *AccountController) CreateAccount(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (aCtl *AccountController) ListAccount(c *gin.Context) {
-	err := kuberbac.RbacOperator.ListAccount()
+func (aCtl *ServiceAccountController) List(c *gin.Context) {
+	err := kuberbac.RbacOperator.ServiceAccount.List()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -27,8 +27,8 @@ func (aCtl *AccountController) ListAccount(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (aCtl *AccountController) DeleteAccount(c *gin.Context) {
-	err := kuberbac.RbacOperator.DeleteAccount()
+func (aCtl *ServiceAccountController) Delete(c *gin.Context) {
+	err := kuberbac.RbacOperator.ServiceAccount.Delete()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -36,8 +36,8 @@ func (aCtl *AccountController) DeleteAccount(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (aCtl *AccountController) UpdateAccount(c *gin.Context) {
-	err := kuberbac.RbacOperator.UpdateAccount()
+func (aCtl *ServiceAccountController) Update(c *gin.Context) {
+	err := kuberbac.RbacOperator.ServiceAccount.Update()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})

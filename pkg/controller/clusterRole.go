@@ -1,16 +1,15 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"kube-rbac-manager/pkg/kuberbac"
 	"kube-rbac-manager/pkg/logger"
-
-	"github.com/gin-gonic/gin"
 )
 
-type RoleBindingController struct{}
+type ClusterRoleController struct{}
 
-func (rbCtl *RoleBindingController) Create(c *gin.Context) {
-	err := kuberbac.RbacOperator.RoleBinding.Create()
+func (rCtl *ClusterRoleController) Create(c *gin.Context) {
+	err := kuberbac.RbacOperator.ClusterRole.Create()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -18,8 +17,8 @@ func (rbCtl *RoleBindingController) Create(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (rbCtl *RoleBindingController) List(c *gin.Context) {
-	err := kuberbac.RbacOperator.RoleBinding.List()
+func (rCtl *ClusterRoleController) List(c *gin.Context) {
+	err := kuberbac.RbacOperator.ClusterRole.List()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -27,8 +26,8 @@ func (rbCtl *RoleBindingController) List(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (rbCtl *RoleBindingController) Delete(c *gin.Context) {
-	err := kuberbac.RbacOperator.RoleBinding.Delete()
+func (rCtl *ClusterRoleController) Delete(c *gin.Context) {
+	err := kuberbac.RbacOperator.ClusterRole.Delete()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})
@@ -36,8 +35,8 @@ func (rbCtl *RoleBindingController) Delete(c *gin.Context) {
 	c.JSON(200, gin.H{})
 }
 
-func (rbCtl *RoleBindingController) Update(c *gin.Context) {
-	err := kuberbac.RbacOperator.RoleBinding.Update()
+func (rCtl *ClusterRoleController) Update(c *gin.Context) {
+	err := kuberbac.RbacOperator.ClusterRole.Update()
 	if err != nil {
 		logger.Log.Error(err.Error())
 		c.JSON(500, gin.H{"msg": err.Error()})

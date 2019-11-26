@@ -14,7 +14,7 @@ func main() {
 	logger.InitLogger()
 
 	// create a KubeOpts
-	err := kuberbac.NewKubeOpts()
+	err := kuberbac.NewKubeOpts(nil, nil)
 	if err != nil {
 		logger.Log.Errorf("Create kubeOpts error, err: %s", err.Error())
 		return
